@@ -21,17 +21,17 @@ pipeline {
                 cd ../10-sg/
                 pwd
                 terraform init -reconfigure
-                cd 20-db
+                cd ../20-db/
                 terraform init -reconfigure
-                cd 40-vpn
+                cd ../40-vpn/
                 terraform init -reconfigure
-                cd 50-app-alb
+                cd ../50-app-alb/
                 terraform init -reconfigure
-                cd 70-acm
+                cd ../70-acm/
                 terraform init -reconfigure
-                cd 80-web-alb
+                cd ../80-web-alb/
                 terraform init -reconfigure
-                cd 100-cdn
+                cd ../100-cdn/
                 terraform init -reconfigure
                """
             }
