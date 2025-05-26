@@ -8,63 +8,10 @@ pipeline {
         ansiColor('xterm')
     }
     parameters {
-        choice(name: 'action', choices: ['VPC', 'SG','Destroy'], description: 'Pick something')
+        choice(name: 'action', choices: ['Destroy'], description: 'Pick something')
     }
     stages {
-        // stage('Init') {
-        //     steps {
-        //        sh """
-        //         pwd
-        //         cd 00-vpc
-        //         terraform init -reconfigure
-        //         pwd
-        //         cd ../10-sg/
-        //         pwd
-        //         terraform init -reconfigure
-        //         cd ../20-db/
-        //         terraform init -reconfigure
-        //         cd ../40-vpn/
-        //         terraform init -reconfigure
-        //         cd ../50-app-alb/
-        //         terraform init -reconfigure
-        //         cd ../70-acm/
-        //         terraform init -reconfigure
-        //         cd ../80-web-alb/
-        //         terraform init -reconfigure
-        //         cd ../100-cdn/
-        //         terraform init -reconfigure
-        //        """
-        //     }
-        // }
-        // stage('Plan') {
-        //     when {
-        //         expression{
-        //             params.action == 'Apply'
-        //         }
-        //     }
-        //     steps {
-        //         sh """
-        //         cd 00-vpc
-        //         terraform plan
-        //         cd 10-sg
-        //         terraform plan
-        //         cd 20-db
-        //         terraform plan
-        //         cd 40-vpn
-        //         terraform plan
-        //         cd 50-app-alb
-        //         terraform plan
-        //         cd 70-acm
-        //         terraform plan
-        //         cd 80-web-alb
-        //         terraform plan
-        //         cd 100-cdn
-        //         terraform plan
-        //         """
-        //     }
-        // }
-
-    stage('VPC') {
+        stage('VPC') {
             steps {
                 sh """
                 cd 00-vpc
@@ -74,7 +21,7 @@ pipeline {
                 """
             }
         }
-    stage('SG') {
+        stage('SG') {
             steps {
                 sh """
                 cd 10-sg
@@ -84,7 +31,7 @@ pipeline {
                 """
             }
         }
-    stage('DB') {
+        stage('DB') {
             steps {
                 sh """
                 cd 20-db
@@ -93,8 +40,8 @@ pipeline {
                 terraform apply -auto-approve
                 """
             }
-    }
-    stage('VPN') {
+        }
+        stage('VPN') {
             steps {
                 sh """
                 cd 40-vpn
@@ -104,7 +51,7 @@ pipeline {
                 """
             }
         }
-    stage('APP-ALB') {
+        stage('APP-ALB') {
             steps {
                 sh """
                 cd 50-app-alb
@@ -114,7 +61,7 @@ pipeline {
                 """
             }
         }
-    stage('ACM') {
+        stage('ACM') {
             steps {
                 sh """
                 cd 70-acm
@@ -124,7 +71,7 @@ pipeline {
                 """
             }
         }
-    stage('WEB-ALB') {
+        stage('WEB-ALB') {
             steps {
                 sh """
                 cd 80-web-alb
@@ -134,7 +81,7 @@ pipeline {
                 """
             }
         }
-    stage('CDN') {
+        stage('CDN') {
             steps {
                 sh """
                 cd 100-cdn
@@ -144,7 +91,6 @@ pipeline {
                 """
             }
         }
-
         stage('Destroy') {
             when {
                 expression{
@@ -186,5 +132,3 @@ pipeline {
         }
     }
  }
-
-
