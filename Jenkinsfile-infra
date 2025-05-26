@@ -64,26 +64,17 @@ pipeline {
         //     }
         // }
 
-stage('VPC') {
-            when {
-                expression{
-                    params.action == 'VPC'
-                }
-            }
+    stage('VPC') {
             steps {
                 sh """
                 cd 00-vpc
                 terraform init -reconfigure
                 terraform plan
                 terraform apply -auto-approve
-                shouldDeploy = true
                 """
             }
         }
-stage('SG') {
-       when {
-                expression { return shouldDeploy }
-            }
+    stage('SG') {
             steps {
                 sh """
                 cd 10-sg
@@ -93,41 +84,65 @@ stage('SG') {
                 """
             }
         }
-
-
-
-
-        // stage('Deploy') {
-        //     when {
-        //         expression{
-        //             params.action == 'Apply'
-        //         }
-        //     }
-        //     input {
-        //         message "Should we continue?"
-        //         ok "Yes, we should."
-        //     }
-        //     steps {
-        //         sh """
-        //         cd 00-vpc
-        //         terraform apply -auto-approve
-        //         cd 10-sg
-        //         terraform apply -auto-approve
-        //         cd 20-db
-        //         terraform apply -auto-approve
-        //         cd 40-vpn
-        //         terraform apply -auto-approve
-        //         cd 50-app-alb
-        //         terraform apply -auto-approve
-        //         cd 70-acm
-        //         terraform apply -auto-approve
-        //         cd 80-web-alb
-        //         terraform apply -auto-approve
-        //         cd 100-cdn
-        //         terraform apply -auto-approve
-        //         """
-        //     }
-        // }
+    stage('DB') {
+            steps {
+                sh """
+                cd 20-db
+                terraform init -reconfigure
+                terraform plan
+                terraform apply -auto-approve
+                """
+            }
+    stage('VPN') {
+            steps {
+                sh """
+                cd 40-vpn
+                terraform init -reconfigure
+                terraform plan
+                terraform apply -auto-approve
+                """
+            }
+        }
+    stage('APP-ALB') {
+            steps {
+                sh """
+                cd 50-app-alb
+                terraform init -reconfigure
+                terraform plan
+                terraform apply -auto-approve
+                """
+            }
+        }
+    stage('ACM') {
+            steps {
+                sh """
+                cd 70-acm
+                terraform init -reconfigure
+                terraform plan
+                terraform apply -auto-approve
+                """
+            }
+        }
+    stage('WEB-ALB') {
+            steps {
+                sh """
+                cd 80-web-alb
+                terraform init -reconfigure
+                terraform plan
+                terraform apply -auto-approve
+                """
+            }
+        }
+    stage('CDN') {
+            steps {
+                sh """
+                cd 100-cdn
+                terraform init -reconfigure
+                terraform plan
+                terraform apply -auto-approve
+                """
+            }
+        }
 
         stage('Destroy') {
             when {
