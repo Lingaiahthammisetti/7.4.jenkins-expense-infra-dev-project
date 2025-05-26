@@ -2,7 +2,8 @@
 #Second attaching dependent ports to security group using aws Security group rule
 
 module "db" {
-source ="../../5.12.terraform-aws-securitygroup"
+#source ="../../5.12.terraform-aws-securitygroup"
+source = "git::https://github.com/Lingaiahthammisetti/5.12.terraform-aws-securitygroup.git?ref=main"
 project_name = var.project_name
 environment =  var.environment
 sg_description = "SG for DB MySQL Instances"
@@ -11,7 +12,8 @@ common_tags = var.common_tags
 sg_name = "db"
 }
 module "backend" {
-source ="../../5.12.terraform-aws-securitygroup"
+#source ="../../5.12.terraform-aws-securitygroup"
+source = "git::https://github.com/Lingaiahthammisetti/5.12.terraform-aws-securitygroup.git?ref=main"
 project_name = var.project_name
 environment =  var.environment
 sg_description = "SG for Backend Instances"
@@ -22,7 +24,8 @@ sg_name = "backend"
 
 #We need to add two more for app_alb and vpcn
 module "app_alb" {
-source ="../../5.12.terraform-aws-securitygroup"
+#source ="../../5.12.terraform-aws-securitygroup"
+source = "git::https://github.com/Lingaiahthammisetti/5.12.terraform-aws-securitygroup.git?ref=main"
 project_name = var.project_name
 environment =  var.environment
 sg_description = "SG for App ALB Instances"
@@ -32,7 +35,8 @@ sg_name = "app_alb"
 }
 
 module "frontend" {
-source ="../../5.12.terraform-aws-securitygroup"
+#source ="../../5.12.terraform-aws-securitygroup"
+source = "git::https://github.com/Lingaiahthammisetti/5.12.terraform-aws-securitygroup.git?ref=main"
 project_name = var.project_name
 environment =  var.environment
 sg_description = "SG for Frontend Instances"
@@ -43,7 +47,8 @@ sg_name = "frontend"
 
 #We need to add two more for app_alb and vpcn
 module "web_alb" {
-source ="../../5.12.terraform-aws-securitygroup"
+#source ="../../5.12.terraform-aws-securitygroup"
+source = "git::https://github.com/Lingaiahthammisetti/5.12.terraform-aws-securitygroup.git?ref=main"
 project_name = var.project_name
 environment =  var.environment
 sg_description = "SG for Web ALB Instances"
@@ -53,7 +58,8 @@ sg_name = "web_alb"
 }
 
 # module "bastion" {
-# source ="../../5.12.terraform-aws-securitygroup"
+#source ="../../5.12.terraform-aws-securitygroup"
+ #source = "git::https://github.com/Lingaiahthammisetti/5.12.terraform-aws-securitygroup.git?ref=main"
 # project_name = var.project_name
 # environment =  var.environment
 # sg_description = "SG for Bastion Instances"
@@ -63,7 +69,8 @@ sg_name = "web_alb"
 # }
 
 module "vpn" {
-source ="../../5.12.terraform-aws-securitygroup"
+#source ="../../5.12.terraform-aws-securitygroup"
+ source = "git::https://github.com/Lingaiahthammisetti/5.12.terraform-aws-securitygroup.git?ref=main"
 project_name = var.project_name
 environment =  var.environment
 sg_description = "SG for VPN Instances"
