@@ -8,7 +8,7 @@ pipeline {
         ansiColor('xterm')
     }
     parameters {
-        choice(name: 'action', choices: ['Apply', 'Destroy'], description: 'Pick something')
+        choice(name: 'action', choices: ['VPC', 'SG'], description: 'Pick something')
     }
     stages {
         stage('Init') {
@@ -63,6 +63,40 @@ pipeline {
                 """
             }
         }
+
+stage('VPC') {
+            when {
+                expression{
+                    params.action == 'VPC'
+                }
+            }
+            steps {
+                sh """
+                cd 00-vpc
+                terraform init -reconfigure
+                terraform plan
+                terraform apply -auto-approve
+                shouldDeploy = true
+                """
+            }
+        }
+stage('SG') {
+       when {
+                expression { return shouldDeploy }
+            }
+            steps {
+                sh """
+                cd 10-sg
+                terraform init -reconfigure
+                terraform plan
+                terraform apply -auto-approve
+                """
+            }
+        }
+
+
+
+
         stage('Deploy') {
             when {
                 expression{
