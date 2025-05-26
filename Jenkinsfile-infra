@@ -93,6 +93,7 @@ pipeline {
                 terraform apply -auto-approve
                 """
             }
+    }
     stage('VPN') {
             steps {
                 sh """
@@ -185,5 +186,5 @@ pipeline {
         }
     }
  }
-}
+
 
