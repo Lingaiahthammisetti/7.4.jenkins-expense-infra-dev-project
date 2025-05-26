@@ -8,61 +8,61 @@ pipeline {
         ansiColor('xterm')
     }
     parameters {
-        choice(name: 'action', choices: ['VPC', 'SG'], description: 'Pick something')
+        choice(name: 'action', choices: ['VPC', 'SG','Destroy'], description: 'Pick something')
     }
     stages {
-        stage('Init') {
-            steps {
-               sh """
-                pwd
-                cd 00-vpc
-                terraform init -reconfigure
-                pwd
-                cd ../10-sg/
-                pwd
-                terraform init -reconfigure
-                cd ../20-db/
-                terraform init -reconfigure
-                cd ../40-vpn/
-                terraform init -reconfigure
-                cd ../50-app-alb/
-                terraform init -reconfigure
-                cd ../70-acm/
-                terraform init -reconfigure
-                cd ../80-web-alb/
-                terraform init -reconfigure
-                cd ../100-cdn/
-                terraform init -reconfigure
-               """
-            }
-        }
-        stage('Plan') {
-            when {
-                expression{
-                    params.action == 'Apply'
-                }
-            }
-            steps {
-                sh """
-                cd 00-vpc
-                terraform plan
-                cd 10-sg
-                terraform plan
-                cd 20-db
-                terraform plan
-                cd 40-vpn
-                terraform plan
-                cd 50-app-alb
-                terraform plan
-                cd 70-acm
-                terraform plan
-                cd 80-web-alb
-                terraform plan
-                cd 100-cdn
-                terraform plan
-                """
-            }
-        }
+        // stage('Init') {
+        //     steps {
+        //        sh """
+        //         pwd
+        //         cd 00-vpc
+        //         terraform init -reconfigure
+        //         pwd
+        //         cd ../10-sg/
+        //         pwd
+        //         terraform init -reconfigure
+        //         cd ../20-db/
+        //         terraform init -reconfigure
+        //         cd ../40-vpn/
+        //         terraform init -reconfigure
+        //         cd ../50-app-alb/
+        //         terraform init -reconfigure
+        //         cd ../70-acm/
+        //         terraform init -reconfigure
+        //         cd ../80-web-alb/
+        //         terraform init -reconfigure
+        //         cd ../100-cdn/
+        //         terraform init -reconfigure
+        //        """
+        //     }
+        // }
+        // stage('Plan') {
+        //     when {
+        //         expression{
+        //             params.action == 'Apply'
+        //         }
+        //     }
+        //     steps {
+        //         sh """
+        //         cd 00-vpc
+        //         terraform plan
+        //         cd 10-sg
+        //         terraform plan
+        //         cd 20-db
+        //         terraform plan
+        //         cd 40-vpn
+        //         terraform plan
+        //         cd 50-app-alb
+        //         terraform plan
+        //         cd 70-acm
+        //         terraform plan
+        //         cd 80-web-alb
+        //         terraform plan
+        //         cd 100-cdn
+        //         terraform plan
+        //         """
+        //     }
+        // }
 
 stage('VPC') {
             when {
@@ -97,37 +97,37 @@ stage('SG') {
 
 
 
-        stage('Deploy') {
-            when {
-                expression{
-                    params.action == 'Apply'
-                }
-            }
-            input {
-                message "Should we continue?"
-                ok "Yes, we should."
-            }
-            steps {
-                sh """
-                cd 00-vpc
-                terraform apply -auto-approve
-                cd 10-sg
-                terraform apply -auto-approve
-                cd 20-db
-                terraform apply -auto-approve
-                cd 40-vpn
-                terraform apply -auto-approve
-                cd 50-app-alb
-                terraform apply -auto-approve
-                cd 70-acm
-                terraform apply -auto-approve
-                cd 80-web-alb
-                terraform apply -auto-approve
-                cd 100-cdn
-                terraform apply -auto-approve
-                """
-            }
-        }
+        // stage('Deploy') {
+        //     when {
+        //         expression{
+        //             params.action == 'Apply'
+        //         }
+        //     }
+        //     input {
+        //         message "Should we continue?"
+        //         ok "Yes, we should."
+        //     }
+        //     steps {
+        //         sh """
+        //         cd 00-vpc
+        //         terraform apply -auto-approve
+        //         cd 10-sg
+        //         terraform apply -auto-approve
+        //         cd 20-db
+        //         terraform apply -auto-approve
+        //         cd 40-vpn
+        //         terraform apply -auto-approve
+        //         cd 50-app-alb
+        //         terraform apply -auto-approve
+        //         cd 70-acm
+        //         terraform apply -auto-approve
+        //         cd 80-web-alb
+        //         terraform apply -auto-approve
+        //         cd 100-cdn
+        //         terraform apply -auto-approve
+        //         """
+        //     }
+        // }
 
         stage('Destroy') {
             when {
@@ -137,21 +137,21 @@ stage('SG') {
             }
             steps {
                 sh """
-                cd 00-vpc
-                terraform destroy -auto-approve
-                cd 10-sg
-                terraform destroy -auto-approve
-                cd 20-db
-                terraform destroy -auto-approve
-                cd 40-vpn
-                terraform destroy -auto-approve
-                cd 50-app-alb
-                terraform destroy -auto-approve
-                cd 70-acm
+                cd 100-cdn
                 terraform destroy -auto-approve
                 cd 80-web-alb
                 terraform destroy -auto-approve
-                cd 100-cdn
+                cd 70-acm
+                terraform destroy -auto-approve
+                cd 50-app-alb
+                terraform destroy -auto-approve
+                cd 40-vpn
+                terraform destroy -auto-approve
+                cd 20-db
+                terraform destroy -auto-approve
+                cd 10-sg
+                terraform destroy -auto-approve
+                cd 00-vpc
                 terraform destroy -auto-approve
                 """
             }
