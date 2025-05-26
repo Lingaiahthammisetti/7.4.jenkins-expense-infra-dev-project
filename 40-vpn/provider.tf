@@ -6,10 +6,10 @@ terraform {
     }
   }
 backend "s3" {
-  bucket = "expense-infra-dev-remote-state"
-  key = "expense-infra-dev-vpc"
+  bucket = "expense-infra-dev-remote-state-1"
+  key = "expense-infra-dev-vpn"
   region = "us-east-1"
-  dynamodb_table="expense-infra-dev-remote-state-locking"
+  dynamodb_table="expense-infra-dev-locking-1"
   }
 }
 
